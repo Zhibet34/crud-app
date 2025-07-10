@@ -11,9 +11,7 @@ const PlaningSchema = new mongoose.Schema({
     },
     body: String,
     address: String,
-    meta: {
-        favorite: Number
-    }
+    favorite: Number
 });
 
 const Planing = mongoose.model('DatePlaning', PlaningSchema);

@@ -1,0 +1,7 @@
+# hide the view from the navbar untill someone sign in
+    - view
+        - user can search for detail on a restaurant by name 
+        or
+        - can reach the view by clicking the card on the homepage for more details
+# move the login to the icon
+    - make it work together
