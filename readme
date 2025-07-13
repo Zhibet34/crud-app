@@ -5,3 +5,7 @@
         - can reach the view by clicking the card on the homepage for more details
 # move the login to the icon
     - make it work together
+
+# to do tomorrow
+    - fix the the card display component 
+        - the props is not working

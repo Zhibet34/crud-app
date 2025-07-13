@@ -7,6 +7,7 @@ const bodyParser = require('body-parser');
 const homeRoute = require('./Routes/homeRoute');
 const deleteRoute = require('./Routes/deleteRoute');
 const postRoute = require('./Routes/postRoute');
+const cardViewRoute = require('./Routes/cardViewRoute');
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test')
@@ -25,7 +26,8 @@ app.use(bodyParser.urlencoded({ extended: true }));
 // Routes
 app.use('/', homeRoute);
 app.use('/delete', deleteRoute);
-app.use('/restaurants', postRoute);  // Changed to more specific path
+app.use('/restaurants', postRoute);
+app.use('/cards',cardViewRoute)
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {

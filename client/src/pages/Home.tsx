@@ -1,11 +1,14 @@
 import axios from "axios";
 import { FiTrash2, FiArchive } from 'react-icons/fi';
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom" // Import useNavigate
 
 function Home(){
     const [Data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+
+    const navigate = useNavigate()
 
     useEffect(()=>{
         const fetchData = async ()=>{
@@ -68,13 +71,14 @@ function Home(){
         }
     }
    
+    
     return (
         <div className="w-full md:w-3/4 lg:w-1/2 xl:w-1/3 mx-auto p-4">
             <h1 className="uppercase text-lg text-center font-bold mb-6 font-extrabold italic">Top places to visit</h1>
             {Data.length > 0 ? (
             <div className="space-y-6">
                 {Data.map((place) => (
-                    <div key={place._id || place.id} className="relative border border-black bg-white rounded-lg p-4 hover:shadow-xl transition-shadow">
+                    <div key={place._id || place.id}  className="relative border border-black bg-white rounded-lg p-4 hover:shadow-xl transition-shadow">
                         {/* Delete Button - Fixed Positioning */}
                         <button 
                         onClick={() => handleDelete(place._id)}
@@ -92,7 +96,7 @@ function Home(){
                         <FiArchive size={18} />
                         </button>
 
-                        <div className="flex items-center space-x-4">
+                        <div className="flex items-center space-x-4" onClick={() => navigate(`/view/${place._id}`)}>
                             <img 
                                 src={place.photo} 
                                 alt={place.title} 
@@ -103,7 +107,6 @@ function Home(){
                             />
                         <div className="flex-1 md:p-4">
                             <h1 className="font-semibold text-lg md:text-center capitalize">{place.title}</h1>
-                            <p className="text-gray-600 text-sm mt-1 text-end">{place.address}</p>
                             <p className="text-gray-700 mt-2 md:text-center">{place.body}</p>
                             <div className="flex items-center mt-2 justify-end">
                             <span className="text-yellow-500">
@@ -113,9 +116,6 @@ function Home(){
                                 ({place.favorite}/5)
                             </span>
                             </div>
-                            <p className="text-sm text-gray-500 mt-2 text-end">
-                            Posted by {place.author} • {new Date(place.date).toLocaleDateString()}
-                            </p>
                         </div>
                         </div>
                     </div>

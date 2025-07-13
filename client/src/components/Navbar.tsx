@@ -117,9 +117,9 @@ function Navbar(){
             <main>
                 <Routes>
                     <Route path='/' element={<Home/>}/>
-                    <Route path='/view' element={<View/>}/>
-                    <Route path='/login' element={<Login/>}/>
-                    <Route path='/form' element={<Form/>}/>
+                    <Route path='view/:id' element={<View/>}/>
+                    <Route path='login' element={<Login/>}/>
+                    <Route path='form' element={<Form/>}/>
                 </Routes>
             </main>
         </BrowserRouter>
