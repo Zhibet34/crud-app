@@ -1,36 +1,77 @@
 import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import CardDisplay from "@/components/CardDisplay";
+import CardSearch from "@/components/CardSearch";
 
 function View(){
     const {id} = useParams();
+    const navigate = useNavigate();
     const [card, setCard] = useState(null)
-    console.log(id)
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
 
-    useEffect(() => {
-        const fetchCard = async () => {
-            try {
-                const response = await axios.get(`http://localhost:3000/cards/${id}`);
+    const fetchCardById = async (id) =>{
+        try {
+            setLoading(true);
+            const response = await axios.get(`http://localhost:3000/cards/${id}`);
+            setCard(response.data);
+            setError(null);
+        } catch (error) {
+            setError('Card not found');
+            setCard(null);
+        } finally {
+            setLoading(false)
+        }
+    };
+
+    const searchByName = async (searchTerm) => {
+        try {
+            setLoading(true);
+            const response = await axios.get(`http://localhost:3000/cards/search?name=${searchTerm}`);
+            if(response.data){
                 setCard(response.data);
-            } catch (err) {
-                console.log(err.message);
-            } finally {
-               
-            }
-        };
-
-        fetchCard();
-    }, [id]);
+                navigate(`/view/${response.data._id}`)
+            };
+            setError(null);
+        } catch (error) {
+            setError('No card found with that name');
+            setCard(null)
+        } finally {
+            setLoading(false)
+        }
+    }
 
     console.log(card)
+
+    useEffect(()=>{
+        if(id && !card) {
+           fetchCardById(id)
+        }
+    },[id]);
+
+    if (loading){
+        return(
+            <div>
+                <h1>the card is loading ...</h1>
+            </div>
+        )
+    };
+
+    if(error){
+        return(
+            <div>
+                <h1>{error}</h1>
+            </div>
+        )
+    }
+
     return(
         <>
-            <h2> card id: {id}</h2>
             {card ? (
-                <CardDisplay card={card} />
+               <CardDisplay card={card}/>
             ) : (
-                {/** the other componet will; be here */}
+               <CardSearch onSearch={searchByName}/>
             )}
         </>
     )
