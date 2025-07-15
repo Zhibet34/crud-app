@@ -4,33 +4,37 @@ interface Card {
     _id: string;
     title?: string;
     photo: string;
-    author: string;
-    body: string;
+    name?: string;
+    description: string;
     createdAt: string | Date;
-    address: string;
-    favorite: number;
+    tags?: string[];
 }
 
 interface CardDisplayProps {
     card: Card | null;
+    favorite?: number;  // Add this line
 }
 
-const CardDisplay: React.FC<CardDisplayProps> = ({ card}) => {
+const CardDisplay: React.FC<CardDisplayProps> = ({ card, favorite }) => {
     if (!card) {
         return <div>No card to display</div>;
     }
 
     return (
         <div key={card._id} className="card">
-            <h1>{card.title}</h1>
-            <img src={card.photo} alt={card.title || "Card image"} />
-            <p>{card.body}</p>
-            <span className="text-yellow-500">
-                {'★'.repeat(card.favorite).padEnd(5, '☆')}
-            </span> 
-            {/** make this click able */}
-            <p>{card.address}</p>
-            <p>{card.author}</p>
+            {favorite !== undefined && (
+                <div className="favorite-badge">{favorite} ♥</div>
+            )}
+            <img src={card.photo} alt={card.title || card.name || "Card image"} />
+            <h1>{card.title || card.name}</h1>
+            <p>{card.description}</p>
+            {card.tags && card.tags.length > 0 && (
+                <div className="tags">
+                    {card.tags.map(tag => (
+                        <span key={tag} className="tag">{tag}</span>
+                    ))}
+                </div>
+            )}
         </div>
     );
 };
