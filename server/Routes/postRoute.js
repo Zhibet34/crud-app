@@ -4,6 +4,10 @@ const multer = require('multer');
 const fs = require('fs');
 const DB = require('../models/Date_Planingf');
 const router = express.Router();
+const mbxGeocoding = require('@mapbox/mapbox-sdk/services/geocoding');
+const mapboxToken = process.env.VITE_MAPBOX_TOKEN;
+const geocoder = mbxGeocoding({accessToken: mapboxToken})
+
 
 // Cloudinary configuration
 cloudinary.config({
@@ -39,6 +43,11 @@ router.post('/restaurant', upload.single('photo'), async (req, res) => {
             rating,
             description
         } = req.body;
+        const geoAddress = `${street},${borough}, ${zipCode}`
+        const geoData = await geocoder.forwardGeocode({
+            query: geoAddress,
+            limit: 1
+        }).send()
         
         const address = `${street} ${apartment} ${borough} ${zipCode}`;
         const newRestaurant = new DB({
@@ -47,7 +56,8 @@ router.post('/restaurant', upload.single('photo'), async (req, res) => {
             author: author,
             body: description,
             address: address,
-            favorite: rating
+            favorite: rating,
+            geometry: geoData.body.features[0].geometry
         }); 
        
         await newRestaurant.save();

@@ -6,6 +6,18 @@
 # move the login to the icon
     - make it work together
 
+# current to do
+    - add a map with a dot where the location of the restaurant is at
+        - use mapbox to accomplish this
+            ex:
+                * = location
+                ---------------
+                |               |
+                |           *   |
+                |               |
+                --------------- 
+    - start worrking on the log in
+
 # to do tomorrow
     - fix the the card display component 
         - the props is not working

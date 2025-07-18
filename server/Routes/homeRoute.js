@@ -4,7 +4,6 @@ const homeRoute = express.Router()
 
 homeRoute.get('/',async (req,res)=>{
     let home_data = await DB.find({});
-    console.log(home_data)
     res.send(home_data)
 })
 

@@ -11,8 +11,8 @@ cardViewRoute.get('/:id', async(req,res)=>{
         };
 
         res.json(card)
-    } catch (error) {
-        
+    } catch (error){
+        console.log(error)
     }
 })
 

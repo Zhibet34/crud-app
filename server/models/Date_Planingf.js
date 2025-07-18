@@ -11,7 +11,18 @@ const PlaningSchema = new mongoose.Schema({
     },
     body: String,
     address: String,
-    favorite: Number
+    favorite: Number,
+    geometry: {
+        type: {
+            type: String,
+            enum: ['Point'],
+            require: true
+        },
+        coordinates: {
+            type: [Number],
+            require: true
+        }
+    }
 });
 
 const Planing = mongoose.model('DatePlaning', PlaningSchema);
