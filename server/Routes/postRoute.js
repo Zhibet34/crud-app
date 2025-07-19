@@ -21,12 +21,20 @@ const upload = multer({ dest: 'temp-folder-image/' });
 router.post('/restaurant', upload.single('photo'), async (req, res) => {
     try {
         if (!req.file) {
-            return res.status(400).json({ error: "Photo is required" }); // Changed status to 400
+            return res.status(400).json({ error: "Photo is required" });
         }
+
+        // Trim whitespace and clean up the filename
+        const cleanOriginalName = req.file.originalname
+            .split('.')[0] // Remove extension
+            .replace(/[^\w-]/g, '') // Remove non-alphanumeric chars
+            .replace(/\s+/g, '-') // Replace spaces with hyphens
+            .toLowerCase(); 
+        const publicId = `${Date.now()}-${cleanOriginalName}`;
 
         const result = await cloudinary.uploader.upload(req.file.path, {
             folder: "restaurants",
-            public_id: `${Date.now()}-${req.file.originalname.split('.')[0]}`,
+            public_id: publicId,  // Use the cleaned public_id
             transformation: [
                 { width: 800, crop: 'scale' },
                 { quality: 'auto' }
@@ -37,19 +45,19 @@ router.post('/restaurant', upload.single('photo'), async (req, res) => {
             title,
             author,
             street,
-            apartment,
+            state,
             borough,
             zipCode,
             rating,
             description
         } = req.body;
-        const geoAddress = `${street},${borough}, ${zipCode}`
+        const geoAddress = `${street} ${borough} ${zipCode}`
         const geoData = await geocoder.forwardGeocode({
             query: geoAddress,
             limit: 1
         }).send()
         
-        const address = `${street} ${apartment} ${borough} ${zipCode}`;
+        const address = `${street} ${borough} ${state} ${zipCode}`;
         const newRestaurant = new DB({
             title: title,
             photo: result.secure_url,

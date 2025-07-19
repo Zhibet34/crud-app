@@ -13,14 +13,14 @@ function Form() {
         photo: null,
         author: '',
         street: '',
-        apartment: '',
         borough: '',
+        state: '',
         zipCode: '',
         rating: '',
         description: ''
     });
 
-    const handleChange = (e) => {
+    const handleChange = (e : any) => {
         const {name, value, files} = e.target;
         setData(prev => ({
             ...prev,
@@ -28,7 +28,7 @@ function Form() {
         }));
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: any) => {
         e.preventDefault();
         try {
             const formDataToSend = new FormData();
@@ -48,8 +48,8 @@ function Form() {
                 photo: null,
                 author: '',
                 street: '',
-                apartment: '',
                 borough: '',
+                state: '',
                 zipCode: '',
                 rating: '',
                 description: ''
@@ -93,7 +93,6 @@ function Form() {
                         className="border border-red-500"
                         onChange={handleChange}
                         required
-                        // File inputs are uncontrolled in React, we handle reset via state
                     />
                 </div>
 
@@ -138,12 +137,25 @@ function Form() {
                     </div> 
 
                     <div className="space-y-2 flex-1">
+                        <Label htmlFor="state">state</Label>
+                        <Input 
+                            id="state" 
+                            name="state" 
+                            type="text" 
+                            className="border border-black w-20" 
+                            value={formData.state}
+                            onChange={handleChange}
+                            required
+                        />
+                    </div> 
+
+                    <div className="space-y-2 flex-1">
                         <Label htmlFor="zipCode">Zip Code</Label>
                         <Input 
                             id="zipCode" 
                             name="zipCode" 
                             type="text" 
-                            className="border border-black w-40 text-center" 
+                            className="border border-black w-25 text-center" 
                             value={formData.zipCode}
                             maxLength={5}
                             onChange={handleChange}
@@ -160,6 +172,7 @@ function Form() {
                             value={formData.rating}
                             min={1} 
                             max={5}
+                            step={.5}
                             onChange={handleChange}
                             required
                         />

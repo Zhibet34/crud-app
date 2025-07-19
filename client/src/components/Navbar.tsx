@@ -15,6 +15,13 @@ import {
 
 function Navbar(){
     const [isMenuOpen, SetIsMenuOpen] = useState(false)
+    const handleViewClick = ()=>{
+        SetIsMenuOpen(false);
+        setTimeout(() => {
+            console.log('the window reloaded')
+            window.location.reload(); // Then reload after a tiny delay
+        });
+    }
     return(
         <BrowserRouter>
             <header  className="bg-teal-500 text-white shadow-lg sticky top-0 z-50">
@@ -86,7 +93,7 @@ function Navbar(){
                                     <NavigationMenuLink asChild>
                                         <Link to='/view'
                                         className='block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-                                        onClick={()=>SetIsMenuOpen(false)}>
+                                        onClick={handleViewClick}>
                                             View
                                         </Link>
                                     </NavigationMenuLink>
@@ -117,7 +124,7 @@ function Navbar(){
             <main>
                 <Routes>
                     <Route path='/' element={<Home/>}/>
-                    <Route path="/view" element={<View />} />
+                    <Route path="/view" element={<View />}/>
                     <Route path='view/:id' element={<View/>}/>
                     <Route path='login' element={<Login/>}/>
                     <Route path='form' element={<Form/>}/>

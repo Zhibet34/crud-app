@@ -49,7 +49,7 @@ function MapboxMap({ geometry }: MapboxMapProps) {
             container: mapContainer.current,
             style: 'mapbox://styles/mapbox/streets-v12',
             center: centerCoords,
-            zoom: 9,
+            zoom: 15,
             antialias: true
         });
 

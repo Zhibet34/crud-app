@@ -39,9 +39,6 @@ const CardDisplay: React.FC<CardDisplayProps> = ({ card, favorite }) => {
                         src={card.photo} 
                         alt={card.title || card.name || "Card image"} 
                         className="w-full h-full object-cover"
-                        onError={(e) => {
-                            (e.target as HTMLImageElement).style.display = 'none';
-                        }}
                     />
                 ) : (
                     <div className="h-full bg-gray-100"></div>

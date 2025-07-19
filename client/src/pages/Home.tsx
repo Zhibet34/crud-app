@@ -3,7 +3,7 @@ import { FiTrash2, FiArchive } from 'react-icons/fi';
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom" // Import useNavigate
 
-import MapboxMap from "@/components/MapboxMap";
+import HomeMap from "@/components/HomeMap";
 
 function Home(){
     const [Data, setData] = useState([]);
@@ -77,7 +77,7 @@ function Home(){
     return (
         <>
             <div className="w-full border">
-                <MapboxMap/>
+                <HomeMap places={Data}/>
             </div>
             <div className="w-full md:w-3/4 lg:w-1/2 xl:w-1/3 mx-auto p-4">
                 <h1 className="uppercase text-lg text-center font-bold mb-6 font-extrabold italic">Top places to visit</h1>
