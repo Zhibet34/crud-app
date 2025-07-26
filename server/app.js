@@ -3,7 +3,8 @@ const cors = require('cors');
 const app = express();
 require('dotenv').config();
 const mongoose = require('mongoose');
-const bodyParser = require('body-parser');
+const sessionMiddleware = require('./config/session');
+const passport = require('./config/passport');
 const homeRoute = require('./Routes/homeRoute');
 const deleteRoute = require('./Routes/deleteRoute');
 const postRoute = require('./Routes/postRoute');
@@ -19,10 +20,15 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test')
         console.error('Database connection error:', err);
     });
 
+
+
 // Middleware
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(sessionMiddleware);
+app.use(passport.initialize());
+app.use(passport.session())
 
 // Routes
 app.use('/', homeRoute);
