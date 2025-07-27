@@ -81,26 +81,26 @@ function LoginForm(){
     return(
         <>
             <form  onSubmit={handleSubmit} className="md:w-3/6 2xl:w-1/5 mx-auto p-4 capitalize italic">
-            <div className="space-y-2">
-                    <Label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
-                        Email Address
-                    </Label>
-                    <Input 
-                        id="email" 
-                        name="email" 
-                        type="email" 
-                        value={loginData.email}
-                        onChange={handleChange}
-                        className={`w-full ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
-                        required
-                        aria-invalid={!!errors.email}
-                        aria-describedby="email-error"
-                    />
-                    {errors.email && (
-                        <p id="email-error" className="text-sm text-red-500">
-                            {errors.email}
-                        </p>
-                    )}
+                <div className="space-y-2">
+                        <Label htmlFor="email" className="block text-sm font-medium text-gray-700 dark:text-gray-300">
+                            Email Address
+                        </Label>
+                        <Input 
+                            id="email" 
+                            name="email" 
+                            type="email" 
+                            value={loginData.email}
+                            onChange={handleChange}
+                            className={`w-full ${errors.email ? 'border-red-500' : 'border-gray-300 dark:border-gray-600'}`}
+                            required
+                            aria-invalid={!!errors.email}
+                            aria-describedby="email-error"
+                        />
+                        {errors.email && (
+                            <p id="email-error" className="text-sm text-red-500">
+                                {errors.email}
+                            </p>
+                        )}
                 </div>
                 
                 <div className="space-y-2 mt-3">

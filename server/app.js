@@ -10,6 +10,7 @@ const deleteRoute = require('./Routes/deleteRoute');
 const postRoute = require('./Routes/postRoute');
 const cardViewRoute = require('./Routes/cardViewRoute');
 const searchRoute = require('./Routes/cardSearch');
+const registrationRoute = require('./Routes/registrationRoute');
 
 // Database connection
 mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test')
@@ -36,6 +37,7 @@ app.use('/delete', deleteRoute);
 app.use('/restaurants', postRoute);
 app.use('/cards/search', searchRoute);
 app.use('/cards', cardViewRoute);
+app.use('/register', registrationRoute);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
