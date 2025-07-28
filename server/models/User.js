@@ -1,24 +1,25 @@
+// models/User.js
 const mongoose = require('mongoose');
-const passport = require('passport');
-mongoose.connect('mongodb://127.0.0.1:27017/test');
-const passportLocalMongoose = require('passport-local-mongoose')
+const passportLocalMongoose = require('passport-local-mongoose');
 
 const userSchema = new mongoose.Schema({
-    email: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true,
-        lowercase: true
-      },
-      username: {
-        type: String,
-        required: true,
-        unique: true,
-        trim: true
-      }
+  email: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true,
+    lowercase: true
+  },
+  username: {
+    type: String,
+    required: true,
+    unique: true,
+    trim: true
+  }
+  // No need for explicit password field when using passport-local-mongoose
+  // It will add username, hash and salt fields automatically
 });
 
 userSchema.plugin(passportLocalMongoose);
 
-module.exports = mongoose.model('User', userSchema)
+module.exports = mongoose.model('User', userSchema);
