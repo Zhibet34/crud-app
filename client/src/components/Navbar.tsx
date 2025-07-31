@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Link } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { FiUser, FiMenu, FiX } from 'react-icons/fi';
 import { HiOutlineLogout } from "react-icons/hi";
 import Home from '../pages/Home';
@@ -13,18 +13,45 @@ import {
   NavigationMenuItem,
   NavigationMenuLink
 } from "@/components/ui/navigation-menu";
+import axios from 'axios';
 
 function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(true);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [error, setError] = useState(null);
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
   const closeMenu = () => setIsMenuOpen(false);
 
-  const handleLogout = () => {
-    // Add your logout logic here
-    setIsLoggedIn(false);
+  const checkAuthStatus = async () => {
+    try {
+      const response = await axios.get('http://localhost:3000/auth/status', { 
+        withCredentials: true 
+      });
+      
+      // Store previous state to compare
+      setIsLoggedIn(response.data.isAuthenticated);
+      
+      
+    } catch (error: any) {
+      console.error('Auth check failed:', error);
+      setError(error);
+    }
   };
+
+  const handleLogout = async () => {
+    try {
+      await axios.post('http://localhost:3000/logout', {}, { withCredentials: true });
+      setIsLoggedIn(false);  // <-- Immediately update state
+    } catch (error: any) {
+      console.error('Logout failed:', error);
+      setError(error);
+    }
+  };
+
+  useEffect(()=>{
+    checkAuthStatus()
+  },[checkAuthStatus])
 
   return (
     <BrowserRouter>
@@ -71,7 +98,7 @@ function Navbar() {
                   <NavigationMenuLink asChild>
                     <Link 
                       to='/form' 
-                      className='text-gray-300 hover:bg-gray-400 hover:text-white px-3 py-2 rounded-md italic text-lg font-medium'
+                      className='text-gray-300 hover:bg-gray-800 hover:text-white px-3 py-2 rounded-md italic text-lg font-medium'
                     >
                       Form
                     </Link>
@@ -81,18 +108,25 @@ function Navbar() {
             </NavigationMenu>
 
             {/* User/Auth Button */}
-            <button 
-              className="p-2 rounded-full hover:bg-gray-800 transition-colors"
-              onClick={isLoggedIn ? handleLogout : undefined}
-            >
+            <div className="flex items-center">
               {isLoggedIn ? (
-                <HiOutlineLogout size={30} className="text-gray-300 hover:text-white" />
+                <button 
+                  onClick={handleLogout}
+                  className="p-2 rounded-full hover:bg-gray-800 transition-colors flex items-center gap-2"
+                >
+                  <HiOutlineLogout size={24} className="text-gray-300 hover:text-white" />
+                  <span className="hidden sm:inline text-gray-300">Logout</span>
+                </button>
               ) : (
-                <Link to='/login'>
-                  <FiUser size={30} className="text-gray-500 hover:text-white center" />
+                <Link 
+                  to='/login'
+                  className="p-2 rounded-full hover:bg-gray-800 transition-colors flex items-center gap-2"
+                >
+                  <FiUser size={24} className="text-gray-300 hover:text-white" />
+                  <span className="hidden sm:inline text-gray-300">Login</span>
                 </Link>
               )}
-            </button>
+            </div>
           </div>
 
           {/* Mobile Navigation */}
@@ -134,13 +168,25 @@ function Navbar() {
                 </NavigationMenuItem>
                 <NavigationMenuItem>
                   <NavigationMenuLink asChild>
-                    <Link 
-                      to='/login'
-                      className='block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
-                      onClick={closeMenu}
-                    >
-                      {isLoggedIn ? 'Logout' : 'Login'}
-                    </Link>
+                    {isLoggedIn ? (
+                      <button
+                        onClick={() => {
+                          handleLogout();
+                          closeMenu();
+                        }}
+                        className='block w-full text-left text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+                      >
+                        Logout
+                      </button>
+                    ) : (
+                      <Link 
+                        to='/login'
+                        className='block text-gray-300 hover:bg-gray-700 hover:text-white px-3 py-2 rounded-md text-sm font-medium'
+                        onClick={closeMenu}
+                      >
+                        Login
+                      </Link>
+                    )}
                   </NavigationMenuLink>
                 </NavigationMenuItem>
               </NavigationMenuList>

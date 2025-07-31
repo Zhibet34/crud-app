@@ -11,7 +11,7 @@ function View() {
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState(null);
 
-    const fetchCardById = async (id) => {
+    const fetchCardById = async (id: string) => {
         try {
             setLoading(true);
             const response = await axios.get(`http://localhost:3000/cards/${id}`);
@@ -25,7 +25,7 @@ function View() {
         }
     };
 
-    const searchByName = async (searchTerm) => {
+    const searchByName = async (searchTerm: ()=> void) => {
         try {
             setLoading(true);
             const response = await axios.get(

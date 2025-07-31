@@ -18,10 +18,15 @@ router.post('/', (req, res, next) => {
       if (err) {
         return res.status(500).json({ success: false, message: 'Login error' });
       }
-      return res.json({ 
-        success: true, 
-        message: 'Logged in successfully',
-        user: { id: user._id, email: user.email }
+      
+      
+      // Ensure session is saved before responding
+      req.session.save(() => {
+        return res.json({ 
+          success: true, 
+          message: 'Logged in successfully',
+          user: { id: user._id, email: user.email }
+        });
       });
     });
   })(req, res, next);

@@ -65,7 +65,8 @@ router.post('/restaurant', upload.single('photo'), async (req, res) => {
             body: description,
             address: address,
             favorite: rating,
-            geometry: geoData.body.features[0].geometry
+            geometry: geoData.body.features[0].geometry,
+            created_by: req.user._id
         }); 
        
         await newRestaurant.save();

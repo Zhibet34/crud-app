@@ -16,10 +16,11 @@ const loginRoute = require('./Routes/loginRoute');
 const initializePassport = require('./config/passport-config');
 const logoutRoute = require('./Routes/logOut');
 const authRoute = require('./Routes/authRoute');
+const cookieParser = require('cookie-parser');
 
 
 // Database connection
-mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test')
+mongoose.connect(process.env.MONGODB_URI)
     .then(() => {
         console.log('Database is connected');
     })
@@ -33,6 +34,7 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test')
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser(process.env.COOKIE_SECRET))
 app.use(sessionMiddleware);
 app.use(passport.initialize());
 app.use(passport.session());

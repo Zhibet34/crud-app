@@ -1,24 +1,25 @@
 const session = require('express-session');
 const MongoStore = require('connect-mongo');
 
-const mongoUrl = process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/test';
-// Session configuration
 const sessionConfig = {
-  secret: 'your-secret-key-at-least-32-characters-long',
-  store: MongoStore.create({
-    mongoUrl: mongoUrl,
-    collectionName: 'sessions', // optional
-    ttl: 14 * 24 * 60 * 60, // session TTL (optional, in seconds)
-    autoRemove: 'native' // automatic cleanup of expired sessions
-  }),
+  secret: process.env.SESSION_ID || 'your-secret-key-32-chars-min',
   resave: false,
   saveUninitialized: false,
+  store: MongoStore.create({
+    mongoUrl: process.env.MONGODB_URI || 'mongodb://127.0.0.1:27017/your-db-name',
+    collectionName: 'sessions',
+    ttl: 14 * 24 * 60 * 60, // 14 days
+    autoRemove: 'native',
+    crypto: {
+      secret: process.env.SESSION_CRYPTO_SECRET || 'your-crypto-secret-32-chars'
+    }
+  }),
   cookie: {
     httpOnly: true,
-    secure: process.env.NODE_ENV === 'production', // HTTPS in production
-    sameSite: 'lax',
+    secure: process.env.NODE_ENV === 'production',
+    sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
     maxAge: 1000 * 60 * 60 * 24 // 1 day
   }
 };
 
-module.exports = session(sessionConfig); // Returns configured session middleware
+module.exports = session(sessionConfig);

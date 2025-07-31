@@ -1,7 +1,8 @@
 import React, {useState, useEffect, type FormEvent, type ChangeEvent} from "react";
-import { Label } from "@radix-ui/react-label"
-import { Input } from "@/components/ui/input"
-import { Button } from "@/components/ui/button"
+import { Label } from "@radix-ui/react-label";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 interface RegisterData {
@@ -17,6 +18,9 @@ interface FormErrors {
 }
 
 function RegistrationForm(){
+
+    const navigate = useNavigate()
+
     const [registrationData, setRegistrationData] = useState<RegisterData>({
         email: '',
         username: '',
@@ -98,9 +102,9 @@ function RegistrationForm(){
                     password: ''
                 });
                 
-                // Redirect or show success message
+                navigate('/')
             } catch (error) {
-                console.error('Registration failed:', error);
+                console.error('Failed to send data:', error);
                 // Handle error (show to user)
             }
         }

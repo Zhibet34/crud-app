@@ -22,6 +22,11 @@ const PlaningSchema = new mongoose.Schema({
             type: [Number],
             require: true
         }
+    },
+    created_by: {
+        type: mongoose.Schema.Types.ObjectId,  // Store reference to User model
+        ref: 'User',  // Reference to your User model
+        required: true
     }
 });
 
